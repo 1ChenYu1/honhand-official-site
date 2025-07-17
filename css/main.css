@@ -43,16 +43,34 @@ canvas#particle-bg {
 .logo {
   font-family: var(--font-mono); font-size: 2rem; font-weight: 700; letter-spacing: 0.1em;
   color: var(--color-cyan); text-shadow: 0 0 12px var(--color-cyan);
+  text-transform: uppercase;
+}
+nav {
+  display: flex; align-items: center; gap: 1.2rem; flex-direction: row; justify-content: flex-end;
 }
 nav a {
-  color: var(--color-white); text-decoration: none; margin-left: 2rem; font-size: 1.1rem; font-weight: 500;
-  position: relative; transition: color 0.2s;
+  color: var(--color-cyan); text-decoration: none; font-size: 1.18rem; font-weight: 800;
+  font-family: var(--font-mono), var(--font-main);
+  letter-spacing: 0.13em;
+  background: rgba(10,14,39,0.7);
+  border: 2.5px solid;
+  border-image: linear-gradient(90deg, var(--color-cyan), var(--color-pink)) 1;
+  border-radius: 999px;
+  padding: 0.6em 2.2em;
+  box-shadow: 0 0 16px 0 var(--color-cyan);
+  margin: 0;
+  transition: color 0.2s, box-shadow 0.2s, background 0.2s, border 0.2s;
+  overflow: hidden;
+  text-transform: uppercase;
 }
-nav a::after {
-  content: ""; display: block; height: 2px; width: 0; background: linear-gradient(90deg, var(--color-cyan), var(--color-pink)); transition: width 0.3s;
+nav a:last-child { margin-right: 0; }
+nav a::after { display: none; }
+nav a:hover {
+  color: var(--color-bg);
+  background: linear-gradient(90deg, var(--color-cyan), var(--color-pink));
+  border-image: linear-gradient(90deg, var(--color-pink), var(--color-cyan)) 1;
+  box-shadow: 0 0 32px 4px var(--color-pink), 0 0 16px 2px var(--color-cyan);
 }
-nav a:hover { color: var(--color-cyan); }
-nav a:hover::after { width: 100%; }
 /* Hero区 */
 .hero {
   min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1;
@@ -148,7 +166,7 @@ nav a:hover::after { width: 100%; }
   mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
 }
 .logo-track {
-  display: flex; gap: 48px; align-items: center; animation: logo-scroll 30s linear infinite;
+  display: flex; gap: 48px; align-items: center; animation: logo-scroll 120s linear infinite;
 }
 .logo-wall img {
   height: 56px; width: auto; filter: drop-shadow(0 0 8px var(--color-cyan)); border-radius: 12px; background: #fff1; transition: transform 0.2s;
