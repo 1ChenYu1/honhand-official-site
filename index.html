@@ -3,131 +3,62 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="上海双洪信息技术有限公司——工控组态软件与HR系统专家，诚信·专业·高效·精致。">
-  <meta name="keywords" content="工控组态,HR系统,工业软件,企业官网,双洪信息,未来科技,赛博风">
-  <meta name="author" content="上海双洪信息技术有限公司">
-  <title>上海双洪信息 | 工控组态 & HR系统</title>
-  <link rel="icon" href="/assets/img/favicon.webp" type="image/webp">
-  <!-- 字体CDN -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <title>上海双洪信息 | HRP SPM 工控与人力资源管理平台</title>
+  <meta name="description" content="上海双洪信息，专注HRP、SPM等高新技术企业信息化解决方案。诚信、专业、高效、精致。">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/source-han-sans-sc@2.004R/SourceHanSansSC.css">
-  <!-- 样式 -->
-  <link rel="stylesheet" href="/css/main.css">
-  <!-- GSAP & ScrollTrigger CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/minimal.js"></script>
 </head>
 <body>
-  <!-- 粒子/数字雨背景 -->
-  <canvas id="particle-bg"></canvas>
-  <!-- 导航栏 -->
-  <header id="navbar" class="navbar">
-    <div class="container nav-inner">
-      <div class="logo">HONHAND</div>
-      <nav>
-        <a href="#about">公司简介</a>
-        <a href="#products">产品</a>
-        <a href="#cases">案例</a>
-        <a href="#contact">联系</a>
-      </nav>
-    </div>
+  <header class="site-header">
+    <nav class="container nav-bar" aria-label="主导航">
+      <a href="index.html" class="logo" aria-label="返回首页">
+        <span class="logo-text">上海双洪信息技术有限公司</span>
+        <span class="logo-line"></span>
+      </a>
+      <div class="nav-links">
+        <a href="hrp.html" aria-label="人力资源管理平台">HRP</a>
+        <a href="spm.html" aria-label="安全生产管理系统">SPM</a>
+        <a href="contact.html" aria-label="联系我们">联系我们</a>
+      </div>
+    </nav>
   </header>
-  <!-- Hero区 -->
-  <section class="hero">
-    <div class="hero-center">
-      <h1 class="slogan">诚信 <span>·</span> 专业 <span>·</span> 高效 <span>·</span> 精致</h1>
-    </div>
-  </section>
-  <!-- 公司简介 -->
-  <section id="about" class="about">
-    <div class="container about-inner">
-      <h2>关于上海双洪信息技术有限公司</h2>
-      <p>专注于工控组态软件与HR系统研发，赋能中国制造数字化转型。十余年行业深耕，服务超 <span class="counter" data-count="300">0</span> 家企业，累计上线项目 <span class="counter" data-count="1200">0</span> 个。</p>
-    </div>
-  </section>
-  <!-- 产品卡片 -->
-  <section id="products" class="products">
-    <div class="container products-inner">
-      <div class="product-card" data-product="hrp">
-        <div class="card-3d">
-          <h3>HRP · 智能人力云</h3>
-          <p>一站式人力资源管理平台，智能考勤、薪酬、绩效全覆盖。</p>
-          <button class="btn-detail" data-drawer="hrp">了解更多</button>
+  <main>
+    <section class="hero-section">
+      <h1 class="hero-title">诚信 <span>·</span> 专业 <span>·</span> 高效 <span>·</span> 精致</h1>
+    </section>
+    <section class="about-section container">
+      <div class="about-card">
+        <p class="about-dropcap"><span class="dropcap">双</span>洪信息是在高新技术应用领域中长期专注于人力资源、智能生产控制、企业安全生产管理、企业综合管理、金融数据中心、金融综合管理平台等相关领域行业信息化的高新技术企业，凭借多年积累的业务咨询和系统建设经验，为用户提供行业最佳实践和优质的贴心服务。</p>
+      </div>
+    </section>
+    <section class="products-section container">
+      <div class="grid-row">
+        <div class="product-card">
+          <h2>HRP</h2>
+          <p>人力资源管理平台</p>
+          <a href="hrp.html" class="btn-gold" aria-label="了解HRP详情">了解更多</a>
+        </div>
+        <div class="product-card">
+          <h2>SPM</h2>
+          <p>安全生产管理系统</p>
+          <a href="spm.html" class="btn-gold" aria-label="了解SPM详情">了解更多</a>
         </div>
       </div>
-      <div class="product-card" data-product="spm">
-        <div class="card-3d">
-          <h3>SPM · 工控组态大师</h3>
-          <p>高性能HMI组态，支持实时监控、数据采集与远程运维。</p>
-          <button class="btn-detail" data-drawer="spm">了解更多</button>
-        </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container contact-footer">
+      <div class="contact-info">
+        <h3>联系我们</h3>
+        <address>
+          上海市浦东新区南汇新城镇环湖西一路99号主楼239室<br>
+          <a href="tel:17321106690">17321106690</a><br>
+          <a href="mailto:chenhongbin@honhand.com">chenhongbin@honhand.com</a>
+        </address>
       </div>
-    </div>
-    <!-- HRP 抽屉 -->
-    <div class="drawer" id="drawer-hrp">
-      <div class="drawer-content">
-        <button class="drawer-close" data-close>×</button>
-        <h3>HRP · 智能人力云</h3>
-        <ul>
-          <li>智能排班与考勤</li>
-          <li>自动薪酬计算</li>
-          <li>绩效与培训一体化</li>
-          <li>多端协同，安全合规</li>
-        </ul>
-      </div>
-    </div>
-    <!-- SPM 抽屉 -->
-    <div class="drawer" id="drawer-spm">
-      <div class="drawer-content">
-        <button class="drawer-close" data-close>×</button>
-        <h3>SPM · 工控组态大师</h3>
-        <ul>
-          <li>拖拽式HMI组态</li>
-          <li>实时数据采集与报警</li>
-          <li>远程运维与权限管理</li>
-          <li>工业协议全覆盖</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-  <!-- 客户案例logo墙 -->
-  <section id="cases" class="cases">
-    <div class="container cases-inner">
-      <h2>合作客户</h2>
-      <div class="logo-wall">
-        <div class="logo-track">
-          <img src="/assets/img/logo1.webp" alt="客户1" loading="lazy">
-          <img src="/assets/img/logo2.webp" alt="客户2" loading="lazy">
-          <img src="/assets/img/logo3.webp" alt="客户3" loading="lazy">
-          <img src="/assets/img/logo4.webp" alt="客户4" loading="lazy">
-          <img src="/assets/img/logo5.webp" alt="客户5" loading="lazy">
-          <img src="/assets/img/logo6.webp" alt="客户6" loading="lazy">
-          <!-- 可继续添加logo -->
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- 联系表单 -->
-  <section id="contact" class="contact">
-    <div class="container contact-inner">
-      <h2>联系我们</h2>
-      <form id="contact-form" action="https://formspree.io/f/your-form-id" method="POST" autocomplete="off">
-        <input type="text" name="name" placeholder="您的姓名" required>
-        <input type="email" name="email" placeholder="邮箱" required>
-        <textarea name="message" placeholder="留言内容" required></textarea>
-        <button type="submit" class="btn-submit">发送</button>
-      </form>
-    </div>
-  </section>
-  <!-- Toast -->
-  <div id="toast" class="toast">感谢您的留言！</div>
-  <!-- 页脚 -->
-  <footer class="footer">
-    <div class="container">
-      <span>© 2024 上海双洪信息技术有限公司 | 沪ICP备20240101号</span>
     </div>
   </footer>
-  <!-- 脚本 -->
-  <script src="/js/app.js" defer></script>
 </body>
 </html>
