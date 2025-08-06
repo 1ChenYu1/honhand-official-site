@@ -58,14 +58,34 @@ export function Navbar() {
             {navigation.map((item) => (
               <div key={item.name} className="relative group">
                 {item.submenu ? (
-                  <div
-                    className="flex items-center space-x-1 cursor-pointer text-white hover:text-primary-400 transition-colors"
-                    onMouseEnter={() => setActiveSubmenu(item.name)}
-                    onMouseLeave={() => setActiveSubmenu(null)}
-                  >
-                    <span>{item.name}</span>
-                    <ChevronDown className="w-4 h-4" />
-                  </div>
+                  <>
+                    <Link
+                      href={item.href}
+                      className="flex items-center space-x-1 cursor-pointer text-white hover:text-primary-400 transition-colors group-hover:text-primary-400"
+                      onMouseEnter={() => setActiveSubmenu(item.name)}
+                    >
+                      <span>{item.name}</span>
+                      <ChevronDown className="w-4 h-4" />
+                    </Link>
+                    
+                    {/* Submenu */}
+                    <div 
+                      className="absolute top-full left-0 mt-2 w-48 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-all duration-300"
+                      onMouseLeave={() => setActiveSubmenu(null)}
+                    >
+                      <div className="py-2 bg-dark-800/90 backdrop-blur-md border border-white/10 rounded-lg shadow-xl">
+                        {item.submenu.map((subitem) => (
+                          <Link
+                            key={subitem.name}
+                            href={subitem.href}
+                            className="block px-4 py-2 text-white hover:bg-primary-500/20 hover:text-primary-400 transition-colors"
+                          >
+                            {subitem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </>
                 ) : (
                   <Link
                     href={item.href}
@@ -73,28 +93,6 @@ export function Navbar() {
                   >
                     {item.name}
                   </Link>
-                )}
-
-                {/* Submenu */}
-                {item.submenu && activeSubmenu === item.name && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute top-full left-0 mt-2 w-48 bg-dark-800/90 backdrop-blur-md border border-white/10 rounded-lg shadow-xl"
-                  >
-                    <div className="py-2">
-                      {item.submenu.map((subitem) => (
-                        <Link
-                          key={subitem.name}
-                          href={subitem.href}
-                          className="block px-4 py-2 text-white hover:bg-primary-500/20 hover:text-primary-400 transition-colors"
-                        >
-                          {subitem.name}
-                        </Link>
-                      ))}
-                    </div>
-                  </motion.div>
                 )}
               </div>
             ))}
@@ -125,9 +123,13 @@ export function Navbar() {
                   <div key={item.name}>
                     {item.submenu ? (
                       <div>
-                        <div className="text-white px-3 py-2 text-base font-medium">
+                        <Link
+                          href={item.href}
+                          className="block px-3 py-2 text-white text-base font-medium hover:text-primary-400 transition-colors"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
                           {item.name}
-                        </div>
+                        </Link>
                         <div className="pl-4">
                           {item.submenu.map((subitem) => (
                             <Link
