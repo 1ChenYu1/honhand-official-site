@@ -7,19 +7,19 @@ const contactInfo = [
   {
     icon: Mail,
     title: '邮箱地址',
-    value: 'info@shuanghong.com',
+    value: 'chenhongbin@honhand.com',
     description: '发送邮件给我们'
   },
   {
     icon: Phone,
     title: '联系电话',
-    value: '400-xxx-xxxx',
+    value: '17321106690',
     description: '24小时服务热线'
   },
   {
     icon: MapPin,
     title: '公司地址',
-    value: '上海市',
+    value: '上海市浦东新区南汇新城镇环湖西一路99号主楼239室',
     description: '我们的办公地点'
   },
   {

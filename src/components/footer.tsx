@@ -62,9 +62,9 @@ export function Footer() {
           <div>
             <h3 className="text-white font-semibold mb-4">联系我们</h3>
             <ul className="space-y-2 text-gray-300">
-              <li>地址：上海市</li>
-              <li>电话：400-xxx-xxxx</li>
-              <li>邮箱：info@shuanghong.com</li>
+              <li>地址：上海市浦东新区南汇新城镇环湖西一路99号主楼239室</li>
+              <li>电话：17321106690</li>
+              <li>邮箱：chenhongbin@honhand.com</li>
             </ul>
           </div>
         </div>

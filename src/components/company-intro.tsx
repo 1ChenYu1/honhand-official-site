@@ -37,7 +37,7 @@ export function CompanyIntro() {
                 viewport={{ once: true }}
                 className="text-lg text-gray-300 leading-relaxed"
               >
-                上海双洪信息技术有限公司成立于2020年，是一家专注于工控领域的智能化解决方案提供商。
+                上海双洪信息技术有限公司成立于2015年8月，是一家专注于工控领域的智能化解决方案提供商。
                 公司致力于工业自动化和数字化转型，为客户提供全方位的技术支持和产品服务。
               </motion.p>
               
@@ -63,15 +63,15 @@ export function CompanyIntro() {
             >
               <div className="glass-effect-dark rounded-lg p-6">
                 <h3 className="text-primary-400 font-semibold mb-2">成立时间</h3>
-                <p className="text-white">2020年</p>
+                <p className="text-white">2015年8月</p>
               </div>
               <div className="glass-effect-dark rounded-lg p-6">
                 <h3 className="text-primary-400 font-semibold mb-2">注册资金</h3>
-                <p className="text-white">1000万元</p>
+                <p className="text-white">1100万元</p>
               </div>
               <div className="glass-effect-dark rounded-lg p-6">
                 <h3 className="text-primary-400 font-semibold mb-2">公司地址</h3>
-                <p className="text-white">上海市</p>
+                <p className="text-white">上海市浦东新区南汇新城镇环湖西一路99号主楼239室</p>
               </div>
               <div className="glass-effect-dark rounded-lg p-6">
                 <h3 className="text-primary-400 font-semibold mb-2">服务客户</h3>
@@ -103,15 +103,15 @@ export function CompanyIntro() {
               </div>
               
               {/* 实际图片（当有图片时显示） */}
-              {/* 
+              {
               <Image
-                src="/images/company-intro.jpg"
+                src="/images/company-intro.png"
                 alt="上海双洪信息技术有限公司"
                 fill
                 className="object-cover"
                 priority
               />
-              */}
+              }
             </div>
             
             {/* 装饰性边框 */}
