@@ -71,17 +71,15 @@ export function HMIProductPage() {
               className="relative"
             >
               <div className="relative h-96 rounded-2xl overflow-hidden glass-effect-dark">
-                {/* 图片5预留位置 - 界面组态 */}
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-blue-500/20 to-cyan-500/20">
-                  <div className="text-center space-y-4">
-                    <div className="w-16 h-16 bg-blue-500/30 rounded-full flex items-center justify-center mx-auto">
-                      <span className="text-2xl">🎨</span>
-                    </div>
-                    <div className="text-white/60">
-                      <p className="text-sm">图片5预留位置</p>
-                      <p className="text-xs">界面组态</p>
-                    </div>
-                  </div>
+                {/* 界面组态 */}
+                <div className="absolute inset-0">
+                  <Image 
+                    src="/images/hmi-interface-config.png"
+                    alt="界面组态"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
                 </div>
               </div>
             </motion.div>
@@ -101,17 +99,15 @@ export function HMIProductPage() {
               className="relative order-2 lg:order-1"
             >
               <div className="relative h-96 rounded-2xl overflow-hidden glass-effect-dark">
-                {/* 图片6预留位置 - 数据采集 */}
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-green-500/20 to-emerald-500/20">
-                  <div className="text-center space-y-4">
-                    <div className="w-16 h-16 bg-green-500/30 rounded-full flex items-center justify-center mx-auto">
-                      <span className="text-2xl">📊</span>
-                    </div>
-                    <div className="text-white/60">
-                      <p className="text-sm">图片6预留位置</p>
-                      <p className="text-xs">数据采集</p>
-                    </div>
-                  </div>
+                {/* 数据采集 */}
+                <div className="absolute inset-0">
+                  <Image 
+                    src="/images/hmi-data-collection.png"
+                    alt="数据采集"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
                 </div>
               </div>
             </motion.div>
@@ -195,17 +191,15 @@ export function HMIProductPage() {
               className="relative"
             >
               <div className="relative h-96 rounded-2xl overflow-hidden glass-effect-dark">
-                {/* 图片7预留位置 - 流程图 */}
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-purple-500/20 to-pink-500/20">
-                  <div className="text-center space-y-4">
-                    <div className="w-16 h-16 bg-purple-500/30 rounded-full flex items-center justify-center mx-auto">
-                      <span className="text-2xl">🔗</span>
-                    </div>
-                    <div className="text-white/60">
-                      <p className="text-sm">图片7预留位置</p>
-                      <p className="text-xs">流程图</p>
-                    </div>
-                  </div>
+                {/* 流程图 */}
+                <div className="absolute inset-0">
+                  <Image 
+                    src="/images/hmi-flow-chart.png"
+                    alt="流程图"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
                 </div>
               </div>
             </motion.div>
@@ -225,17 +219,15 @@ export function HMIProductPage() {
               className="relative order-2 lg:order-1"
             >
               <div className="relative h-96 rounded-2xl overflow-hidden glass-effect-dark">
-                {/* 图片8预留位置 - 趋势图 */}
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-yellow-500/20 to-orange-500/20">
-                  <div className="text-center space-y-4">
-                    <div className="w-16 h-16 bg-yellow-500/30 rounded-full flex items-center justify-center mx-auto">
-                      <span className="text-2xl">📈</span>
-                    </div>
-                    <div className="text-white/60">
-                      <p className="text-sm">图片8预留位置</p>
-                      <p className="text-xs">趋势图</p>
-                    </div>
-                  </div>
+                {/* 趋势图 */}
+                <div className="absolute inset-0">
+                  <Image 
+                    src="/images/hmi-trend-chart.png"
+                    alt="趋势图"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
                 </div>
               </div>
             </motion.div>
@@ -319,17 +311,15 @@ export function HMIProductPage() {
               className="relative"
             >
               <div className="relative h-96 rounded-2xl overflow-hidden glass-effect-dark">
-                {/* 图片9预留位置 - 棒图 */}
-                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-red-500/20 to-pink-500/20">
-                  <div className="text-center space-y-4">
-                    <div className="w-16 h-16 bg-red-500/30 rounded-full flex items-center justify-center mx-auto">
-                      <span className="text-2xl">📊</span>
-                    </div>
-                    <div className="text-white/60">
-                      <p className="text-sm">图片9预留位置</p>
-                      <p className="text-xs">棒图</p>
-                    </div>
-                  </div>
+                {/* 棒图 */}
+                <div className="absolute inset-0">
+                  <Image 
+                    src="/images/hmi-bar-chart.png"
+                    alt="棒图"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
                 </div>
               </div>
             </motion.div>

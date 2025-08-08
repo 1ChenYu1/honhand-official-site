@@ -71,7 +71,7 @@ export function Footer() {
 
         {/* 版权信息 */}
         <div className="border-t border-white/10 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2024 上海双洪信息技术有限公司. 保留所有权利.</p>
+          <p>&copy; 2025 上海双洪信息技术有限公司. 保留所有权利.</p>
         </div>
       </div>
     </footer>
