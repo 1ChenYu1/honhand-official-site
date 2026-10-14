@@ -1,159 +1,133 @@
-"use client"
+'use client'
 
-import { motion } from 'framer-motion'
+import { ArrowRight, CheckCircle2, Cpu } from 'lucide-react'
 import Link from 'next/link'
-import { ArrowRight, Cpu, Database, Monitor } from 'lucide-react'
 
-const products = [
-  {
-    id: 'hr',
-    name: 'HR产品',
-    description: '人力资源管理系统，提供全面的员工管理、绩效考核、薪酬管理等解决方案',
-    icon: Cpu,
-    href: '/products/hr',
-    features: ['员工管理', '绩效考核', '薪酬管理', '培训发展'],
-    color: 'from-blue-500 to-cyan-500'
-  },
-  {
-    id: 'spm',
-    name: 'SPM产品',
-    description: '供应链管理平台，实现供应链全流程的数字化管理和优化',
-    icon: Database,
-    href: '/products/spm',
-    features: ['采购管理', '库存控制', '物流配送', '供应商管理'],
-    color: 'from-green-500 to-emerald-500'
-  },
-  {
-    id: 'hmi',
-    name: 'HMI产品',
-    description: '人机交互界面系统，提供直观、高效的工业控制界面解决方案',
-    icon: Monitor,
-    href: '/products/hmi',
-    features: ['界面组态', '数据采集', '实时监控', '趋势分析'],
-    color: 'from-purple-500 to-pink-500'
-  }
-]
+import { products } from '@/lib/products'
+import { cn } from '@/lib/utils'
+import { SectionHeading } from './ui/section-heading'
+import { Reveal } from './ui/reveal'
+import { LinkButton } from './ui/link-button'
 
 export function ProductMatrix() {
   return (
-    <section className="py-20 bg-dark-900 relative overflow-hidden">
-      {/* 背景装饰 */}
-      <div className="absolute top-0 left-0 w-full h-full particle-bg opacity-10" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* 标题 */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-gradient mb-4">
-            核心产品矩阵
-          </h2>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            为工控领域提供全方位的智能化解决方案，助力企业实现数字化转型
-          </p>
-        </motion.div>
+    <section className="section relative overflow-hidden bg-neutral-50">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-0 bg-dots opacity-50" />
+        <div className="absolute -left-32 top-24 h-80 w-80 rounded-full bg-primary-100/60 blur-[110px]" />
+        <div className="absolute -right-24 bottom-10 h-80 w-80 rounded-full bg-corporate-teal-100/60 blur-[110px]" />
+      </div>
 
-        {/* 产品卡片 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="container-page relative">
+        <SectionHeading
+          eyebrow={{ icon: Cpu, label: '核心产品' }}
+          title={
+            <>
+              三条产品线，
+              <br className="hidden sm:block" />
+              覆盖人、货、机的<span className="text-gradient-brand">全部现场</span>
+            </>
+          }
+          description="HR 管人、SPM 管货、HMI 管界面。三者共享同一套数据底座，可以单独部署，也可以组合成完整方案。"
+        />
+
+        <div className="mt-16 grid gap-5 md:grid-cols-3">
           {products.map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div className="flip-card h-96">
-                <div className="flip-card-inner">
-                  {/* 正面 */}
-                  <div className="flip-card-front glass-effect-dark rounded-2xl p-8 flex flex-col justify-between">
-                    <div className="space-y-4">
-                      <div className={`w-16 h-16 bg-gradient-to-r ${product.color} rounded-2xl flex items-center justify-center`}>
-                        <product.icon className="w-8 h-8 text-white" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-white">{product.name}</h3>
-                      <p className="text-gray-300 leading-relaxed">{product.description}</p>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      <div className="flex flex-wrap gap-2">
-                        {product.features.map((feature) => (
-                          <span
-                            key={feature}
-                            className="px-3 py-1 bg-white/10 rounded-full text-sm text-white/80"
-                          >
-                            {feature}
-                          </span>
-                        ))}
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <span className="text-primary-400 font-semibold">了解更多</span>
-                        <ArrowRight className="w-5 h-5 text-primary-400 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </div>
-                  </div>
+            <Reveal key={product.id} delay={index * 0.1} className="h-full">
+              <Link
+                href={product.href}
+                className={cn(
+                  'group relative flex h-full flex-col overflow-hidden rounded-3xl border border-neutral-200/80 bg-white p-8',
+                  'shadow-card transition-all duration-500 ease-premium',
+                  'hover:-translate-y-1.5 hover:border-transparent hover:shadow-card-hover',
+                  'focus-visible:-translate-y-1.5 focus-visible:shadow-card-hover'
+                )}
+              >
+                {/* 悬停时浮现的品牌色渐变描边 */}
+                <span
+                  aria-hidden
+                  className={cn(
+                    'pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br p-px opacity-0 transition-opacity duration-500 group-hover:opacity-100',
+                    product.gradient
+                  )}
+                >
+                  <span className="block h-full w-full rounded-[calc(1.5rem-1px)] bg-white" />
+                </span>
 
-                  {/* 背面 */}
-                  <div className="flip-card-back glass-effect-dark rounded-2xl p-8 flex flex-col justify-center">
-                    <div className="text-center space-y-6">
-                      <div className={`w-20 h-20 bg-gradient-to-r ${product.color} rounded-2xl flex items-center justify-center mx-auto`}>
-                        <product.icon className="w-10 h-10 text-white" />
-                      </div>
-                      
-                      <h3 className="text-2xl font-bold text-white">{product.name}</h3>
-                      
-                      <div className="space-y-3">
-                        {product.features.map((feature) => (
-                          <div key={feature} className="flex items-center justify-center space-x-2">
-                            <div className="w-2 h-2 bg-primary-400 rounded-full" />
-                            <span className="text-gray-300">{feature}</span>
-                          </div>
-                        ))}
-                      </div>
-                      
-                      <Link href={product.href}>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          className="holographic-button"
-                        >
-                          查看详情
-                        </motion.button>
-                      </Link>
-                    </div>
-                  </div>
+                {/* 顶部氛围光 */}
+                <span
+                  aria-hidden
+                  className={cn(
+                    'pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-gradient-to-br opacity-0 blur-3xl transition-opacity duration-700 group-hover:opacity-30',
+                    product.gradient
+                  )}
+                />
+
+                <div className="relative">
+                  <span
+                    className={cn(
+                      'grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br text-white shadow-corporate transition-transform duration-500 ease-premium group-hover:scale-105',
+                      product.gradient
+                    )}
+                    aria-hidden
+                  >
+                    <product.icon className="h-6 w-6" />
+                  </span>
+
+                  <h3 className="mt-6 text-xl font-bold text-neutral-900">
+                    {product.name}
+                    <span className="ml-2 align-middle text-[13px] font-normal text-neutral-400">
+                      {product.tagline}
+                    </span>
+                  </h3>
+                  <p className="body-copy mt-3 text-[15px]">{product.description}</p>
                 </div>
-              </div>
-            </motion.div>
+
+                <ul className="relative mt-6 flex flex-wrap gap-2">
+                  {product.features.map((feature) => (
+                    <li
+                      key={feature}
+                      className={cn(
+                        'inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13px] font-medium ring-1 ring-inset transition-colors duration-300',
+                        product.wash,
+                        product.accent,
+                        product.ring
+                      )}
+                    >
+                      <CheckCircle2 className="h-3.5 w-3.5" aria-hidden />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="relative mt-8 flex items-center justify-between border-t border-neutral-100 pt-6">
+                  <span className={cn('text-sm font-semibold', product.accent)}>
+                    了解更多
+                  </span>
+                  <span
+                    className={cn(
+                      'grid h-9 w-9 place-items-center rounded-full bg-gradient-to-br text-white shadow-corporate transition-transform duration-500 ease-premium group-hover:translate-x-1',
+                      product.gradient
+                    )}
+                    aria-hidden
+                  >
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
+                </div>
+              </Link>
+            </Reveal>
           ))}
         </div>
 
-        {/* 底部CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-          <Link href="/products">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="holographic-button"
-            >
+        <Reveal delay={0.3}>
+          <div className="mt-14 flex justify-center">
+            <LinkButton href="/products" variant="secondary">
               查看所有产品
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </motion.button>
-          </Link>
-        </motion.div>
+              <ArrowRight className="h-4 w-4" aria-hidden />
+            </LinkButton>
+          </div>
+        </Reveal>
       </div>
     </section>
   )
-} 
+}

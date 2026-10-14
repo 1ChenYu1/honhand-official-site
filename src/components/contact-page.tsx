@@ -1,250 +1,405 @@
-"use client"
+'use client'
 
-import { motion } from 'framer-motion'
-import { Mail, Phone, MapPin, Clock } from 'lucide-react'
+import { useState, type FormEvent } from 'react'
+import {
+  AlertCircle,
+  CheckCircle2,
+  ExternalLink,
+  Loader2,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Phone,
+  Send,
+} from 'lucide-react'
 
-const contactInfo = [
-  {
-    icon: Mail,
-    title: '邮箱地址',
-    value: 'chenhongbin@honhand.com',
-    description: '发送邮件给我们'
-  },
-  {
-    icon: Phone,
-    title: '联系电话',
-    value: '17321106690',
-    description: '24小时服务热线'
-  },
-  {
-    icon: MapPin,
-    title: '公司地址',
-    value: '上海市浦东新区南汇新城镇环湖西一路99号主楼239室',
-    description: '我们的办公地点'
-  },
-  {
-    icon: Clock,
-    title: '工作时间',
-    value: '周一至周五 9:00-18:00',
-    description: '标准工作时间'
-  }
-]
+import { contactChannels } from '@/lib/contact'
+import { site } from '@/lib/site'
+import { cn } from '@/lib/utils'
+import { PageHero } from './ui/page-hero'
+import { SectionHeading } from './ui/section-heading'
+import { Reveal } from './ui/reveal'
+import { LinkButton } from './ui/link-button'
+
+type Status = 'idle' | 'submitting' | 'success' | 'error'
+
+type FieldErrors = Partial<Record<'name' | 'email' | 'phone' | 'subject' | 'message', string>>
+
+const fields = [
+  { name: 'name', label: '姓名', type: 'text', placeholder: '请输入您的姓名', required: true, autoComplete: 'name' },
+  { name: 'email', label: '邮箱', type: 'email', placeholder: '请输入您的邮箱', required: true, autoComplete: 'email' },
+  { name: 'phone', label: '电话', type: 'tel', placeholder: '选填，方便我们回电', required: false, autoComplete: 'tel' },
+  { name: 'company', label: '公司名称', type: 'text', placeholder: '选填', required: false, autoComplete: 'organization' },
+] as const
 
 export function ContactPage() {
+  const [status, setStatus] = useState<Status>('idle')
+  const [message, setMessage] = useState('')
+  const [errors, setErrors] = useState<FieldErrors>({})
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setStatus('submitting')
+    setErrors({})
+    setMessage('')
+
+    const form = event.currentTarget
+    const payload = Object.fromEntries(new FormData(form).entries())
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      const result = await response.json()
+
+      if (!response.ok || !result.ok) {
+        setStatus('error')
+        setErrors(result.errors ?? {})
+        setMessage(result.message ?? '提交失败，请稍后重试。')
+        return
+      }
+
+      setStatus('success')
+      setMessage(result.message)
+      form.reset()
+    } catch {
+      setStatus('error')
+      setMessage('网络异常，请稍后重试，或直接致电我们。')
+    }
+  }
+
   return (
-    <div className="bg-dark-900 min-h-screen">
-      {/* Hero区域 */}
-      <section className="py-20 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full particle-bg opacity-10" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
-            <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-6">
-              联系我们
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              我们期待与您建立联系，为您提供专业的工控领域智能化解决方案。
-              无论您有任何问题或需求，我们都将竭诚为您服务。
-            </p>
-          </motion.div>
+    <>
+      <PageHero
+        eyebrow={{ icon: MessageCircle, label: '联系我们' }}
+        title="把您的现场问题交给我们"
+        description="无论是选型咨询、方案报价还是故障支持，直接说明情况，我们会安排对应产品的工程师对接。"
+      >
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <LinkButton href={`tel:${site.phone.replace(/\s/g, '')}`} variant="secondary">
+            <Phone className="h-4 w-4 text-primary-600" aria-hidden />
+            {site.phone}
+          </LinkButton>
+          <LinkButton href={site.emailHref} variant="secondary">
+            <Mail className="h-4 w-4 text-primary-600" aria-hidden />
+            发送邮件
+          </LinkButton>
         </div>
-      </section>
+      </PageHero>
 
-      {/* 联系信息 */}
-      <section className="py-20 bg-dark-800/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl font-bold text-gradient mb-4">联系方式</h2>
-            <p className="text-xl text-gray-300">多种方式联系我们，我们随时为您服务</p>
-          </motion.div>
+      {/* 联系方式 */}
+      <section className="section relative bg-white pt-0">
+        <div className="container-page">
+          <div className="-mt-12 grid gap-4 sm:grid-cols-2 lg:-mt-16 lg:grid-cols-4">
+            {contactChannels.map((channel, index) => {
+              const inner = (
+                <>
+                  <span
+                    className={`grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br ${channel.iconBg} text-white shadow-corporate`}
+                    aria-hidden
+                  >
+                    <channel.icon className="h-5 w-5" />
+                  </span>
+                  <p className="mt-5 text-[13px] font-medium text-neutral-500">{channel.title}</p>
+                  <p className="mt-1.5 text-[15px] font-bold leading-snug text-neutral-900">
+                    {channel.value}
+                  </p>
+                  <p className="mt-1.5 text-[13px] text-neutral-400">{channel.description}</p>
+                </>
+              )
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {contactInfo.map((info, index) => (
-              <motion.div
-                key={info.title}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="glass-effect-dark rounded-2xl p-8 text-center hover:neon-glow transition-all duration-300"
-              >
-                <div className="w-16 h-16 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <info.icon className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-2">{info.title}</h3>
-                <p className="text-primary-400 font-semibold mb-2">{info.value}</p>
-                <p className="text-gray-300 text-sm">{info.description}</p>
-              </motion.div>
-            ))}
+              const shell = `group h-full rounded-3xl border border-neutral-200/80 bg-white p-7 text-left shadow-corporate transition-all duration-500 ease-premium ${channel.wash}`
+
+              return (
+                <Reveal key={channel.title} delay={index * 0.08}>
+                  {channel.href ? (
+                    <a
+                      href={channel.href}
+                      className={`${shell} block hover:-translate-y-1 hover:shadow-corporate-xl`}
+                      {...(channel.href.startsWith('http')
+                        ? { target: '_blank', rel: 'noopener noreferrer' }
+                        : {})}
+                    >
+                      {inner}
+                    </a>
+                  ) : (
+                    <div className={shell}>{inner}</div>
+                  )}
+                </Reveal>
+              )
+            })}
           </div>
         </div>
       </section>
 
-      {/* 联系表单 */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl font-bold text-gradient mb-4">发送消息</h2>
-            <p className="text-xl text-gray-300">填写下面的表单，我们会尽快回复您</p>
-          </motion.div>
+      {/* 表单 */}
+      <section id="contact-form" className="section scroll-mt-24 bg-neutral-50">
+        <div className="container-page">
+          <SectionHeading
+            eyebrow={{ icon: Send, label: '发送消息' }}
+            title="填写需求，我们来准备方案"
+            description="带 * 为必填项。信息越具体，我们准备的方案越贴合您的现场。"
+          />
 
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="glass-effect-dark rounded-2xl p-8"
-          >
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label htmlFor="name" className="block text-white font-semibold mb-2">
-                    姓名 *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-colors"
-                    placeholder="请输入您的姓名"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-white font-semibold mb-2">
-                    邮箱 *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-colors"
-                    placeholder="请输入您的邮箱"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="phone" className="block text-white font-semibold mb-2">
-                  电话
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  name="phone"
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-colors"
-                  placeholder="请输入您的电话"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="company" className="block text-white font-semibold mb-2">
-                  公司名称
-                </label>
-                <input
-                  type="text"
-                  id="company"
-                  name="company"
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-colors"
-                  placeholder="请输入您的公司名称"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="subject" className="block text-white font-semibold mb-2">
-                  主题 *
-                </label>
-                <input
-                  type="text"
-                  id="subject"
-                  name="subject"
-                  required
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-colors"
-                  placeholder="请输入消息主题"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-white font-semibold mb-2">
-                  消息内容 *
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  required
-                  rows={6}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-primary-500 transition-colors resize-none"
-                  placeholder="请详细描述您的需求或问题"
-                />
-              </div>
-
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                type="submit"
-                className="w-full holographic-button"
+          <Reveal delay={0.1}>
+            <div className="mx-auto mt-12 max-w-3xl">
+              <form
+                onSubmit={handleSubmit}
+                noValidate
+                className="rounded-[2rem] border border-neutral-200/80 bg-white p-7 shadow-corporate-lg sm:p-10"
               >
-                发送消息
-              </motion.button>
-            </form>
-          </motion.div>
+                {/* 蜜罐 */}
+                <div className="absolute h-0 w-0 overflow-hidden" aria-hidden>
+                  <label htmlFor="website">请勿填写</label>
+                  <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+                </div>
+
+                <div className="grid gap-5 sm:grid-cols-2">
+                  {fields.map((field) => (
+                    <div key={field.name}>
+                      <label htmlFor={field.name} className="label-corporate">
+                        {field.label}
+                        {field.required ? (
+                          <span className="ml-0.5 text-primary-600" aria-hidden>
+                            *
+                          </span>
+                        ) : (
+                          <span className="ml-1.5 text-[12px] font-normal text-neutral-400">
+                            选填
+                          </span>
+                        )}
+                      </label>
+                      <input
+                        id={field.name}
+                        name={field.name}
+                        type={field.type}
+                        required={field.required}
+                        autoComplete={field.autoComplete}
+                        placeholder={field.placeholder}
+                        aria-invalid={errors[field.name as keyof FieldErrors] ? true : undefined}
+                        aria-describedby={
+                          errors[field.name as keyof FieldErrors]
+                            ? `${field.name}-error`
+                            : undefined
+                        }
+                        className={cn(
+                          'input-corporate',
+                          errors[field.name as keyof FieldErrors] &&
+                            'border-red-300 focus:border-red-400 focus:ring-red-500/10'
+                        )}
+                      />
+                      {errors[field.name as keyof FieldErrors] ? (
+                        <p
+                          id={`${field.name}-error`}
+                          className="mt-1.5 flex items-center gap-1.5 text-[13px] text-red-600"
+                        >
+                          <AlertCircle className="h-3.5 w-3.5" aria-hidden />
+                          {errors[field.name as keyof FieldErrors]}
+                        </p>
+                      ) : null}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-5">
+                  <label htmlFor="subject" className="label-corporate">
+                    主题
+                    <span className="ml-0.5 text-primary-600" aria-hidden>
+                      *
+                    </span>
+                  </label>
+                  <input
+                    id="subject"
+                    name="subject"
+                    type="text"
+                    required
+                    placeholder="例如：需要一套产线 HMI 监控系统"
+                    aria-invalid={errors.subject ? true : undefined}
+                    aria-describedby={errors.subject ? 'subject-error' : undefined}
+                    className={cn(
+                      'input-corporate',
+                      errors.subject &&
+                        'border-red-300 focus:border-red-400 focus:ring-red-500/10'
+                    )}
+                  />
+                  {errors.subject ? (
+                    <p id="subject-error" className="mt-1.5 flex items-center gap-1.5 text-[13px] text-red-600">
+                      <AlertCircle className="h-3.5 w-3.5" aria-hidden />
+                      {errors.subject}
+                    </p>
+                  ) : null}
+                </div>
+
+                <div className="mt-5">
+                  <label htmlFor="message" className="label-corporate">
+                    需求描述
+                    <span className="ml-0.5 text-primary-600" aria-hidden>
+                      *
+                    </span>
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    required
+                    rows={6}
+                    placeholder="请说明现场情况、现有系统、期望达成的目标，以及大致的产线或设备规模。"
+                    aria-invalid={errors.message ? true : undefined}
+                    aria-describedby={errors.message ? 'message-error' : undefined}
+                    className={cn(
+                      'textarea-corporate',
+                      errors.message &&
+                        'border-red-300 focus:border-red-400 focus:ring-red-500/10'
+                    )}
+                  />
+                  {errors.message ? (
+                    <p id="message-error" className="mt-1.5 flex items-center gap-1.5 text-[13px] text-red-600">
+                      <AlertCircle className="h-3.5 w-3.5" aria-hidden />
+                      {errors.message}
+                    </p>
+                  ) : null}
+                </div>
+
+                {/* 状态提示 */}
+                {status === 'success' ? (
+                  <div
+                    role="status"
+                    className="mt-6 flex items-start gap-3 rounded-2xl border border-green-200 bg-green-50 px-5 py-4 text-[15px] text-green-800"
+                  >
+                    <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-green-600" aria-hidden />
+                    <span>{message}</span>
+                  </div>
+                ) : null}
+
+                {status === 'error' ? (
+                  <div
+                    role="alert"
+                    className="mt-6 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-[15px] text-red-800"
+                  >
+                    <AlertCircle className="mt-0.5 h-5 w-5 shrink-0 text-red-600" aria-hidden />
+                    <span>
+                      {message}
+                      {!Object.keys(errors).length ? (
+                        <>
+                          {' '}
+                          您也可以直接致电{' '}
+                          <a href={site.phoneHref} className="font-semibold underline">
+                            {site.phone}
+                          </a>
+                          。
+                        </>
+                      ) : null}
+                    </span>
+                  </div>
+                ) : null}
+
+                <button
+                  type="submit"
+                  disabled={status === 'submitting'}
+                  className="btn-corporate mt-7 w-full"
+                >
+                  {status === 'submitting' ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+                      正在提交…
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4" aria-hidden />
+                      发送消息
+                    </>
+                  )}
+                </button>
+
+                <p className="mt-4 text-center text-[13px] text-neutral-400">
+                  我们仅将您提供的信息用于本次需求沟通，不会对外分享。
+                </p>
+              </form>
+            </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* 地图区域 */}
-      <section className="py-20 bg-dark-800/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl font-bold text-gradient mb-4">我们的位置</h2>
-            <p className="text-xl text-gray-300">欢迎您到访我们的办公地点</p>
-          </motion.div>
+      {/* 位置 */}
+      <section className="section bg-white">
+        <div className="container-page">
+          <SectionHeading
+            eyebrow={{ icon: MapPin, label: '我们的位置' }}
+            title="欢迎您到访"
+            description={`${site.address}（${site.hours}）`}
+          />
 
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="relative"
-          >
-            <div className="relative h-96 rounded-2xl overflow-hidden glass-effect-dark">
-              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary-500/20 to-secondary-500/20">
-                <div className="text-center space-y-4">
-                  <div className="w-16 h-16 bg-primary-500/30 rounded-full flex items-center justify-center mx-auto">
-                    <span className="text-2xl">🗺️</span>
-                  </div>
-                  <div className="text-white/60">
-                    <p className="text-sm">地图位置</p>
-                    <p className="text-xs">上海市</p>
+          <Reveal delay={0.1}>
+            <div className="relative mx-auto mt-12 max-w-4xl overflow-hidden rounded-[2rem] border border-neutral-200/80 bg-neutral-50 shadow-corporate-lg">
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-dots opacity-70"
+              />
+              <div className="relative grid gap-8 p-10 sm:grid-cols-[auto_1fr] sm:items-center sm:p-14">
+                <span
+                  className="grid h-16 w-16 place-items-center rounded-2xl bg-gradient-to-br from-primary-500 to-primary-700 text-white shadow-corporate-xl"
+                  aria-hidden
+                >
+                  <MapPin className="h-7 w-7" />
+                </span>
+                <div>
+                  <p className="text-lg font-bold text-neutral-900">{site.name}</p>
+                  <p className="mt-2 max-w-lg leading-relaxed text-neutral-600">{site.address}</p>
+                  <div className="mt-6 flex flex-wrap gap-3">
+                    <LinkButton href={site.mapHref} variant="secondary" size="sm">
+                      在地图中打开
+                      <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+                    </LinkButton>
+                    <LinkButton href={site.phoneHref} variant="secondary" size="sm">
+                      致电前台
+                    </LinkButton>
                   </div>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </Reveal>
         </div>
       </section>
-    </div>
+
+      {/* CTA */}
+      <section className="relative isolate overflow-hidden bg-brand-gradient py-20 text-white md:py-24">
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-dots opacity-20" />
+          <div className="absolute -left-20 top-0 h-72 w-72 rounded-full bg-white/10 blur-[90px]" />
+          <div className="absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-neutral-900/20 blur-[90px]" />
+        </div>
+
+        <div className="container-page">
+          <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center">
+            <Reveal>
+              <h2 className="text-balance text-3xl font-bold text-white md:text-4xl">
+                立即获取专业咨询
+              </h2>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <p className="text-lg leading-relaxed text-white/80">
+                我们的专业团队随时准备为您解答疑问，提供最适合您的解决方案。
+              </p>
+            </Reveal>
+            <Reveal delay={0.16}>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <LinkButton href="#contact-form" variant="invert">
+                  立即填写需求
+                </LinkButton>
+                <LinkButton
+                  href={site.phoneHref}
+                  variant="ghost"
+                  className="rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 hover:text-white"
+                >
+                  <Phone className="h-4 w-4" aria-hidden />
+                  {site.phone}
+                </LinkButton>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+    </>
   )
-} 
+}

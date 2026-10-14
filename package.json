@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3011",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check:icons": "node scripts/check-icons.js",
+    "check:classes": "npm run build && node scripts/check-classes.js && node scripts/check-dynamic-classes.js",
+    "verify": "npm run check:icons && npm run lint && npm run build && node scripts/check-classes.js && node scripts/check-dynamic-classes.js"
   },
   "dependencies": {
     "next": "14.0.4",
@@ -20,10 +23,6 @@
     "autoprefixer": "^10.0.1",
     "postcss": "^8",
     "framer-motion": "^10.16.16",
-    "three": "^0.158.0",
-    "@types/three": "^0.158.3",
-    "@react-three/fiber": "^8.15.12",
-    "@react-three/drei": "^9.88.13",
     "lucide-react": "^0.294.0",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.0.0"
@@ -32,4 +31,4 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.4"
   }
-} 
+}

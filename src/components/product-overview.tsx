@@ -1,118 +1,130 @@
-"use client"
+'use client'
 
-import { motion } from 'framer-motion'
-import Link from 'next/link'
-import { ArrowRight, Cpu, Database, Monitor } from 'lucide-react'
+import { ArrowRight, CheckCircle2, Cpu } from 'lucide-react'
 
-const products = [
-  {
-    id: 'hr',
-    name: 'HR产品',
-    description: '人力资源管理系统，提供全面的员工管理、绩效考核、薪酬管理等解决方案',
-    icon: Cpu,
-    href: '/products/hr',
-    features: ['员工管理', '绩效考核', '薪酬管理', '培训发展'],
-    color: 'from-blue-500 to-cyan-500',
-    longDescription: 'HR产品是一套完整的人力资源管理解决方案，涵盖从招聘到离职的全生命周期管理。系统采用模块化设计，支持灵活配置和扩展，能够满足不同规模企业的需求。'
-  },
-  {
-    id: 'spm',
-    name: 'SPM产品',
-    description: '供应链管理平台，实现供应链全流程的数字化管理和优化',
-    icon: Database,
-    href: '/products/spm',
-    features: ['采购管理', '库存控制', '物流配送', '供应商管理'],
-    color: 'from-green-500 to-emerald-500',
-    longDescription: 'SPM产品是专业的供应链管理平台，通过数字化手段优化供应链各个环节，提高运营效率，降低运营成本。系统支持多级供应商管理，实时库存监控，智能采购决策等功能。'
-  },
-  {
-    id: 'hmi',
-    name: 'HMI产品',
-    description: '人机交互界面系统，提供直观、高效的工业控制界面解决方案',
-    icon: Monitor,
-    href: '/products/hmi',
-    features: ['界面组态', '数据采集', '实时监控', '趋势分析'],
-    color: 'from-purple-500 to-pink-500',
-    longDescription: 'HMI产品是先进的人机交互界面系统，为工业控制提供直观、高效的操作界面。系统支持多种数据源接入，实时数据展示，历史趋势分析，报警管理等功能。'
-  }
-]
+import { products } from '@/lib/products'
+import { cn } from '@/lib/utils'
+import { PageHero } from './ui/page-hero'
+import { Reveal } from './ui/reveal'
+import { LinkButton } from './ui/link-button'
 
 export function ProductOverview() {
   return (
-    <section className="py-20 bg-dark-900 relative overflow-hidden">
-      {/* 背景装饰 */}
-      <div className="absolute top-0 left-0 w-full h-full particle-bg opacity-10" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* 标题 */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
-            产品中心
-          </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            为工控领域提供全方位的智能化解决方案，助力企业实现数字化转型
-          </p>
-        </motion.div>
+    <>
+      <PageHero
+        eyebrow={{ icon: Cpu, label: '产品中心' }}
+        title="为工控现场而生的三款产品"
+        description="不做大而全的通用软件，只解决工控场景里真正难的三件事：人的效率、物的流转、机的可视。"
+      />
 
-        {/* 产品列表 */}
-        <div className="space-y-12">
-          {products.map((product, index) => (
-            <motion.div
-              key={product.id}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              viewport={{ once: true }}
-              className="glass-effect-dark rounded-2xl p-8 hover:neon-glow transition-all duration-300"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-                {/* 产品图标和基本信息 */}
-                <div className="space-y-4">
-                  <div className={`w-20 h-20 bg-gradient-to-r ${product.color} rounded-2xl flex items-center justify-center shadow-lg`}>
-                    <product.icon className="w-10 h-10 text-white" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-white">{product.name}</h2>
-                  <p className="text-gray-300">{product.description}</p>
-                </div>
-
-                {/* 产品详细描述 */}
-                <div className="lg:col-span-2 space-y-6">
-                  <p className="text-gray-300 leading-relaxed">{product.longDescription}</p>
-                  
-                  {/* 功能特性 */}
-                  <div className="flex flex-wrap gap-2">
-                    {product.features.map((feature) => (
-                      <span
-                        key={feature}
-                        className="px-4 py-2 bg-white/10 rounded-full text-sm text-white/80 border border-white/20"
-                      >
-                        {feature}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* CTA按钮 */}
-                  <Link href={product.href}>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="holographic-button"
-                    >
-                      了解详情
-                      <ArrowRight className="ml-2 w-5 h-5" />
-                    </motion.button>
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+      <section className="section relative overflow-hidden bg-neutral-50 pt-0">
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          <div className="absolute inset-0 bg-dots opacity-50" />
+          <div className="absolute -left-32 top-10 h-80 w-80 rounded-full bg-primary-100/50 blur-[110px]" />
+          <div className="absolute -right-24 bottom-20 h-80 w-80 rounded-full bg-corporate-teal-100/50 blur-[110px]" />
         </div>
-      </div>
-    </section>
+
+        <div className="container-page relative -mt-10 space-y-6">
+          {products.map((product, index) => (
+            <Reveal key={product.id} delay={index * 0.08}>
+              <article className="overflow-hidden rounded-[2rem] border border-neutral-200/80 bg-white shadow-card transition-shadow duration-500 ease-premium hover:shadow-corporate-xl">
+                <div className="grid gap-10 p-8 lg:grid-cols-12 lg:gap-12 lg:p-12">
+                  {/* 左：身份 */}
+                  <div className="lg:col-span-4">
+                    <span
+                      className={cn(
+                        'grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br text-white shadow-corporate',
+                        product.gradient
+                      )}
+                      aria-hidden
+                    >
+                      <product.icon className="h-7 w-7" />
+                    </span>
+
+                    <h2 className="mt-6 text-2xl font-bold text-neutral-900">{product.name}</h2>
+                    <p className={cn('mt-1 text-sm font-medium', product.accent)}>
+                      {product.tagline}
+                    </p>
+                    <p className="body-copy mt-4 text-[15px]">{product.longDescription}</p>
+
+                    <dl className="mt-8 grid grid-cols-3 gap-3 border-t border-neutral-100 pt-6">
+                      {product.metrics.map((metric) => (
+                        <div key={metric.label}>
+                          <dd className="text-lg font-bold tracking-tight text-neutral-900">
+                            {metric.value}
+                          </dd>
+                          <dt className="mt-1 text-[11px] leading-snug text-neutral-400">
+                            {metric.label}
+                          </dt>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+
+                  {/* 右：能力 */}
+                  <div className="lg:col-span-8">
+                    <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-neutral-400">
+                      核心能力
+                    </h3>
+                    <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                      {product.highlights.map((highlight) => (
+                        <li
+                          key={highlight}
+                          className={cn(
+                            'flex items-start gap-3 rounded-2xl px-4 py-3.5 text-[15px] font-medium text-neutral-700 ring-1 ring-inset transition-colors duration-300',
+                            product.wash,
+                            product.ring
+                          )}
+                        >
+                          <CheckCircle2
+                            className={cn('mt-0.5 h-4 w-4 shrink-0', product.accent)}
+                            aria-hidden
+                          />
+                          {highlight}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <div className="mt-8 flex flex-wrap items-center gap-3">
+                      <LinkButton href={product.href}>
+                        了解 {product.name} 详情
+                        <ArrowRight className="h-4 w-4" aria-hidden />
+                      </LinkButton>
+                      <span className="flex flex-wrap gap-2">
+                        {product.features.map((feature) => (
+                          <span
+                            key={feature}
+                            className="inline-flex items-center rounded-full bg-neutral-100 px-3 py-1.5 text-[13px] font-medium text-neutral-600"
+                          >
+                            {feature}
+                          </span>
+                        ))}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 底部品牌色条 */}
+                <div className={cn('h-1 w-full bg-gradient-to-r', product.gradient)} aria-hidden />
+              </article>
+            </Reveal>
+          ))}
+
+          <Reveal delay={0.24}>
+            <div className="flex flex-col items-center justify-between gap-6 rounded-[2rem] border border-neutral-200/80 bg-white px-8 py-8 text-center shadow-card sm:flex-row sm:text-left">
+              <div>
+                <h3 className="text-lg font-bold text-neutral-900">不确定该选哪一款？</h3>
+                <p className="mt-2 text-neutral-500">
+                  告诉我们现场情况，我们帮您做选型，并给出实施周期与预算区间。
+                </p>
+              </div>
+              <LinkButton href="/contact" className="shrink-0">
+                获取选型建议
+              </LinkButton>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </>
   )
-} 
+}

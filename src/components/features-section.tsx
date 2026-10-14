@@ -1,117 +1,177 @@
-"use client"
+'use client'
 
-import { motion } from 'framer-motion'
-import { Shield, Eye, AlertTriangle, Wrench } from 'lucide-react'
+import { AlertTriangle, Eye, ShieldCheck, Sparkles, Wrench } from 'lucide-react'
+
+import { cn } from '@/lib/utils'
+import { SectionHeading } from './ui/section-heading'
+import { Reveal } from './ui/reveal'
 
 const features = [
   {
-    icon: Shield,
+    icon: ShieldCheck,
+    step: '01',
     title: '风险早识别',
-    description: '通过先进的算法和数据分析，提前识别潜在风险，防患于未然',
-    color: 'from-red-500 to-pink-500'
+    description: '通过算法与数据分析，提前识别潜在风险，防患于未然。',
+    gradient: 'from-red-500 to-rose-600',
+    wash: 'bg-red-50/60',
+    ring: 'ring-red-100',
+    accent: 'text-red-600',
   },
   {
     icon: Eye,
+    step: '02',
     title: '问题早发现',
-    description: '实时监控系统运行状态，快速发现并定位问题根源',
-    color: 'from-blue-500 to-cyan-500'
+    description: '实时监控系统运行状态，快速发现并定位问题根源。',
+    gradient: 'from-primary-500 to-primary-700',
+    wash: 'bg-primary-50/60',
+    ring: 'ring-primary-100',
+    accent: 'text-primary-600',
   },
   {
     icon: AlertTriangle,
+    step: '03',
     title: '隐患早预警',
-    description: '智能预警机制，在隐患出现前及时发出警告信号',
-    color: 'from-yellow-500 to-orange-500'
+    description: '智能预警机制，在隐患真正造成损失前发出警告信号。',
+    gradient: 'from-amber-500 to-orange-600',
+    wash: 'bg-amber-50/60',
+    ring: 'ring-amber-100',
+    accent: 'text-amber-600',
   },
   {
     icon: Wrench,
+    step: '04',
     title: '故障早处理',
-    description: '快速响应机制，确保故障在最短时间内得到有效处理',
-    color: 'from-green-500 to-emerald-500'
-  }
+    description: '快速响应机制，确保故障在最短时间内得到有效处理。',
+    gradient: 'from-emerald-500 to-green-700',
+    wash: 'bg-emerald-50/60',
+    ring: 'ring-emerald-100',
+    accent: 'text-emerald-600',
+  },
+]
+
+const promises = [
+  { icon: ShieldCheck, label: '高可用性' },
+  { icon: Eye, label: '高稳定性' },
+  { icon: AlertTriangle, label: '高安全性' },
 ]
 
 export function FeaturesSection() {
   return (
-    <section className="py-20 bg-dark-800/30 relative overflow-hidden">
-      {/* 背景装饰 */}
-      <div className="absolute top-0 left-0 w-full h-full particle-bg opacity-10" />
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* 标题 */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-gradient mb-4">
-            四早机制 - 核心价值
-          </h2>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-            通过"四早机制"为客户提供可靠的产品和优质的服务，确保系统稳定运行
-          </p>
-        </motion.div>
+    <section className="section relative overflow-hidden bg-white">
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-20 top-24 h-72 w-72 rounded-full bg-primary-50/60 blur-[110px]" />
+        <div className="absolute -right-24 bottom-16 h-72 w-72 rounded-full bg-corporate-teal-50/60 blur-[110px]" />
+      </div>
 
-        {/* 特色功能网格 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="container-page relative">
+        <SectionHeading
+          eyebrow={{ icon: Sparkles, label: '核心价值' }}
+          title={
+            <>
+              四早机制 ——
+              <br className="hidden sm:block" />
+              把损失挡在<span className="text-gradient-brand">故障之前</span>
+            </>
+          }
+          description="从被动抢修转向主动预防。这四个动作贯穿我们所有的产品设计与服务流程。"
+        />
+
+        {/* 四早机制 */}
+        <ol className="mt-16 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="group"
-            >
-              <div className="glass-effect-dark rounded-2xl p-8 h-full hover:neon-glow transition-all duration-300">
-                <div className="space-y-6">
-                  {/* 图标 */}
-                  <motion.div
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    className={`w-16 h-16 bg-gradient-to-r ${feature.color} rounded-2xl flex items-center justify-center shadow-lg`}
-                  >
-                    <feature.icon className="w-8 h-8 text-white" />
-                  </motion.div>
+            <li key={feature.title} className="h-full">
+              <Reveal delay={index * 0.09} className="h-full">
+                <div
+                  className={cn(
+                    'group relative flex h-full flex-col overflow-hidden rounded-3xl border border-neutral-200/80 bg-white p-7',
+                    'shadow-card transition-all duration-500 ease-premium hover:-translate-y-1.5 hover:shadow-card-hover'
+                  )}
+                >
+                  <span
+                    className={cn(
+                      'pointer-events-none absolute inset-x-0 top-0 h-24 opacity-0 transition-opacity duration-500 group-hover:opacity-100',
+                      feature.wash
+                    )}
+                    aria-hidden
+                  />
 
-                  {/* 内容 */}
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-bold text-white group-hover:text-primary-400 transition-colors">
-                      {feature.title}
-                    </h3>
-                    <p className="text-gray-300 leading-relaxed">
-                      {feature.description}
-                    </p>
+                  <div className="relative flex items-start justify-between">
+                    <span
+                      className={cn(
+                        'grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br text-white shadow-corporate transition-transform duration-500 ease-premium group-hover:scale-105',
+                        feature.gradient
+                      )}
+                      aria-hidden
+                    >
+                      <feature.icon className="h-6 w-6" />
+                    </span>
+                    <span
+                      className={cn('text-3xl font-bold tracking-tightest', feature.accent)}
+                      aria-hidden
+                    >
+                      {feature.step}
+                    </span>
                   </div>
 
-                  {/* 装饰性元素 */}
-                  <div className="w-full h-1 bg-gradient-to-r from-transparent via-primary-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                  <h3 className="relative mt-6 text-lg font-bold text-neutral-900">
+                    {feature.title}
+                  </h3>
+                  <p className="body-copy relative mt-3 flex-1 text-[15px]">
+                    {feature.description}
+                  </p>
 
-        {/* 底部说明 */}
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-          <div className="glass-effect-dark rounded-2xl p-8 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold text-white mb-4">
-              智能化解决方案的优势
-            </h3>
-            <p className="text-gray-300 leading-relaxed">
-              通过"四早机制"的核心理念，我们为客户提供全方位的智能化解决方案。
-              从风险识别到故障处理，每一个环节都经过精心设计和优化，
-              确保系统的高可用性、高稳定性和高安全性。
-            </p>
+                  {/* 进度条 */}
+                  <div className="relative mt-7 flex gap-1.5" aria-hidden>
+                    {['opacity-40', 'opacity-70', 'opacity-100'].map((tone) => (
+                      <span
+                        key={tone}
+                        className={cn(
+                          'h-1 flex-1 rounded-full bg-gradient-to-r transition-opacity duration-500',
+                          feature.gradient,
+                          tone
+                        )}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+
+        {/* 优势总结 */}
+        <Reveal delay={0.2}>
+          <div className="relative mt-16 overflow-hidden rounded-[2rem] border border-neutral-200/80 bg-neutral-50 p-9 md:p-14">
+            <div aria-hidden className="pointer-events-none absolute inset-0 bg-grid opacity-60" />
+            <div className="relative mx-auto max-w-3xl text-center">
+              <h3 className="text-balance text-2xl font-bold text-neutral-900 md:text-3xl">
+                智能化解决方案的优势
+              </h3>
+              <p className="body-copy mt-5 text-[17px]">
+                通过「四早机制」的核心理念，我们为客户提供全方位的智能化解决方案。
+                从风险识别到故障处理，每一个环节都经过精心设计和优化，
+                确保系统的高可用性、高稳定性和高安全性。
+              </p>
+              <ul className="mt-8 flex flex-wrap justify-center gap-3">
+                {promises.map((promise) => (
+                  <li
+                    key={promise.label}
+                    className={cn(
+                      'inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold ring-1 ring-inset',
+                      promise.icon === ShieldCheck && 'bg-primary-50 text-primary-700 ring-primary-100',
+                      promise.icon === Eye && 'bg-corporate-teal-50 text-corporate-teal-700 ring-corporate-teal-100',
+                      promise.icon === AlertTriangle && 'bg-accent-50 text-accent-700 ring-accent-100'
+                    )}
+                  >
+                    <promise.icon className="h-4 w-4" aria-hidden />
+                    {promise.label}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
-        </motion.div>
+        </Reveal>
       </div>
     </section>
   )
-} 
+}

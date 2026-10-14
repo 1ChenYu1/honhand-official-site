@@ -1,36 +1,28 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+node_modules/
+.next/
+out/
+build/
+dist/
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-.yarn/install-state.gz
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
 .DS_Store
-*.pem
+Thumbs.db
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# local env files
+.env
 .env*.local
+!.env.example
 
-# vercel
+npm-debug.log*
+yarn-error.log*
+yarn-debug.log*
+pnpm-debug.log*
+
 .vercel
-
-# typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.idea/
+.vscode/
+*.swp
+
+# 生产环境不要提交真实图片源文件，只保留优化后的引用
+/public/images/*.tmp
