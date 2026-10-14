@@ -11,6 +11,9 @@
     "check:classes": "npm run build && node scripts/check-classes.js && node scripts/check-dynamic-classes.js",
     "verify": "npm run check:icons && npm run lint && npm run build && node scripts/check-classes.js && node scripts/check-dynamic-classes.js"
   },
+  "engines": {
+    "node": ">=18.17.0"
+  },
   "dependencies": {
     "next": "14.0.4",
     "react": "^18",

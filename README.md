@@ -1,6 +1,6 @@
 # 上海双洪信息技术有限公司官网
 
-企业官网，采用 Next.js 14 App Router + TypeScript + Tailwind CSS 构建，视觉基调为「克制的科技质感」。
+企业官网，采用 Next.js 14 App Router + TypeScript + Tailwind CSS 构建。
 
 ## 技术栈
 
@@ -144,12 +144,68 @@ public/images/                  # 图片资源
 - 滚动入场动画一律用 `ui/reveal.tsx`，不要重复写 `whileInView`
 - lucide 图标必须存在于已安装版本内。`npm run check:icons` 会校验并同时检测重复导入标识符，避免 `Handshake` 这类「版本里没有」导致的整页崩溃
 
-## 部署
 
-Vercel 直接导入即可。自建服务器需 Node 18+，构建后以 `npm start` 运行。
 
-上线前请替换：
+### 部署步骤（以 Linux 服务器为例）
 
-- `src/lib/site.ts` 的 `domain`（影响 canonical / OG 链接）
-- 页脚备案号（`footer.tsx` 底部，若需要展示）
-- 接入表单通知渠道
+```bash
+node -v                          # 确认 >= 18.17.0
+# 安装 Node（若未装），建议用 nvm 便于多版本管理
+
+cd /var/www/honhand
+npm ci                           # 按 lock 精确安装
+npm run build
+npm start                        # 默认监听 3000
+```
+
+前台运行适合调试，正式环境建议交给进程守护：
+
+```bash
+pm2 start npm --name honhand -- start      # 或用 systemd / Windows 服务
+```
+
+反向代理（Nginx）示例：
+
+```nginx
+location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+### 四、三个已实测确认的坑
+
+**① 构建时需要能访问 Google Fonts（最可能踩到）**
+
+`src/app/layout.tsx` 使用了 `next/font/google`，它会在 **构建阶段**去
+`fonts.gstatic.com` 下载字体。访问不到时构建直接失败：
+
+```
+FetchError: request to https://fonts.gstatic.com/s/inter/... failed
+reason: getaddrinfo ENOTFOUND fonts.gstatic.com
+```
+
+国内服务器上这个问题几乎必现。三种解法：
+把字体文件下载到仓库改用 `next/font/local`（推荐，构建完全离线）、
+给构建命令配代理、或在能联网的机器上构建后再传产物。
+
+**② 缺少 `sharp` 会导致图片优化退化**
+
+启动时会打印：
+
+```
+For production Image Optimization with Next.js, the optional 'sharp' package
+is strongly recommended.
+```
+
+此时 `/_next/image` 会退化为直接返回原图（实测返回 `image/png` 15942 字节，
+而非优化后的 avif）。`sharp` 不在 `package.json` 里，`npm ci` 不会装它，
+需要在服务器上单独执行：
+
+```bash
+npm i sharp        # 会安装与服务器平台匹配的版本
+```
+
+
+
